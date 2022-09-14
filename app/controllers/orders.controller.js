@@ -5,7 +5,7 @@ const { signtoken } = require('../models/middleware.models')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { odate, ogetdate, oaddress,total,small,big,roll,smallprice,bigprice,rollprice,ostatus,userid } = req.body
+  const { odate, ogetdate, total,small,big,roll,smallprice,bigprice,rollprice,ostatus,userid } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [ userid])) return
   //คำสั่ง SQL
@@ -14,7 +14,6 @@ exports.create = async (req, res) => {
   let data = {
     order_date: odate,
     order_getdate: ogetdate,
-    order_address: oaddress,
     order_total: total,
     order_small: small,
     order_big: big,
@@ -79,16 +78,16 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { odate, ogetdate, oaddress, total, small, big, roll, smallprice, bigprice, rollprice, ostatus } = req.body
+  const { odate, ogetdate,  total, small, big, roll, smallprice, bigprice, rollprice, ostatus } = req.body
   //ดึงข้อมูลจาก params
   const { id } = req.params
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [id])) return
   //คำสั่ง SQL
-  let sql = `UPDATE orders SET order_date = ?, order_getdate  = ?, order_address = ?, order_total = ?,
+  let sql = `UPDATE orders SET order_date = ?, order_getdate  = ?,  order_total = ?,
             order_small = ?, order_big = ?, order_roll = ?, order_smallprice = ?, order_bigprice = ?, order_rollprice = ?, order_status = ? WHERE order_id = ?`
   //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
-  let data = [odate, ogetdate, oaddress, total, small, big, roll, smallprice, bigprice, rollprice, ostatus, id ]
+  let data = [odate, ogetdate, , total, small, big, roll, smallprice, bigprice, rollprice, ostatus, id ]
   //แก้ไขข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.update(sql, data, (err, data) => {
     if (err)
