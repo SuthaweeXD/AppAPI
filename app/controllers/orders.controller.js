@@ -5,7 +5,7 @@ const { signtoken } = require('../models/middleware.models')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { odate, ogetdate, total,small,big,roll,smallprice,bigprice,rollprice,ostatus,userid } = req.body
+  const { odate, ogetdate, total,small,big,roll,smallprice,bigprice,rollprice,userid } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [ userid])) return
   //คำสั่ง SQL
@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
     order_smallprice: smallprice,
     order_bigprice: bigprice,
     order_rollprice: rollprice,
-    order_status: ostatus,
+    order_status: 1,
     user_id: userid,
 
 
