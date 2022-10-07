@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
     user_fname: fname,
     user_lname: lname,
     user_number: number,
-    user_role: role,
+    user_role: 'C',
     user_address: address,
     user_name: username,
     user_password: hashPassword(password),
