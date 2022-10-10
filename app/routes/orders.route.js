@@ -16,7 +16,7 @@ module.exports = (app) => {
   router.put('/:id', update)
 
   router.delete('/:id', deleteOne)
-  router.put('status/:id', updatestatus)
+  router.put('/status/:id', updatestatus)
 
 
   //เซ็ต PREFIX
