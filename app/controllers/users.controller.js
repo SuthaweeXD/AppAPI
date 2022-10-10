@@ -5,7 +5,7 @@ const { sign } = require('../models/middleware.models')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { fname, lname, number, address, username, password, } = req.body
+  const { fname, lname, number, address, username, password } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [username, password])) return
   //คำสั่ง SQL
@@ -18,10 +18,14 @@ exports.create = async (req, res) => {
     user_number: number,
     user_role: "C",
     user_address: address,
+    lat: 0,
+    
+    lng: 0,
     user_name: username,
     user_password: hashPassword(password),
     
   }
+  console.log(data);
   //เพิ่มข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.create(sql, data, async (err, data) => {
     // if ((err.errno = 1062)) {
