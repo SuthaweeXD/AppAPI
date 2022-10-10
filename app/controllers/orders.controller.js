@@ -138,23 +138,38 @@ exports.login = async (req, res) => {
     } else res.status(204).end()
   })
 }
-exports.updateStatus = async (req, res) => {
-  //ดึงข้อมูลจาก request
-  const { statusOrder } = req.body
-  //ดึงข้อมูลจาก params
-  const { id } = req.params
-  //ตรวจสอบความถูกต้อง request
-  if (validate_req(req, res, [id])) return
-  //คำสั่ง SQL
+// exports.updateStatus = async (req, res) => {
+//   //ดึงข้อมูลจาก request
+//   const { statusOrder } = req.body
+//   //ดึงข้อมูลจาก params
+//   const { id } = req.params
+//   //ตรวจสอบความถูกต้อง request
+//   if (validate_req(req, res, [id])) return
+//   //คำสั่ง SQL
+//   let sql = `UPDATE orders SET order_status = ? WHERE order_id = ?`
+//   //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
+//   let data = [statusOrder,  id]
+//   //แก้ไขข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+//   await mysql.update(sql, data, (err, data) => {
+//     if (err)
+//       res.status(err.status).send({
+//         message: err.message || 'Some error occurred.',
+//       })
+//     else res.status(204).end()
+//   })
+// }
+exports.updatestatus = async(req, res) =>{
+  const{statusOrder} = req.body
+  const{id} =req.params
+  if (validate_req(req,res,[id])) return
   let sql = `UPDATE orders SET order_status = ? WHERE order_id = ?`
-  //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
-  let data = [statusOrder,  id]
-  //แก้ไขข้อมูล โดยส่งคำสั่ง SQL เข้าไป
-  await mysql.update(sql, data, (err, data) => {
-    if (err)
-      res.status(err.status).send({
-        message: err.message || 'Some error occurred.',
-      })
-    else res.status(204).end()
-  })
+  let data = [statusOrder,id]
+  await mysql.update(sql,data,(err,data) =>{
+    if (err) 
+    res.status(err.status).send({
+      message: err.message|| 'Some erroe occurred.',
+    })
+    else res.status(204).end
+  }
+  )
 }
