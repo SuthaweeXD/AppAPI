@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const router = require('express').Router()
   const { verifytoken } = require('../models/middleware.models.js')
-  const { create,findAll,findOne,update,deleteOne,login, updatestatus } = require('../controllers/orders.controller')
+  const { create,findAll,findOne,update,deleteOne,login, updateStatus } = require('../controllers/orders.controller')
 
   router.post('/', create)
 
@@ -16,7 +16,7 @@ module.exports = (app) => {
   router.put('/:id', update)
 
   router.delete('/:id', deleteOne)
-  router.put('/status/:id', updatestatus)
+  router.put('/status/:id', updateStatus)
 
 
   //เซ็ต PREFIX
