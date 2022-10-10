@@ -5,7 +5,7 @@ const { sign } = require('../models/middleware.models')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { fname, lname, number, role, address, username, password, } = req.body
+  const { fname, lname, number, address, username, password, } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [username, password])) return
   //คำสั่ง SQL
