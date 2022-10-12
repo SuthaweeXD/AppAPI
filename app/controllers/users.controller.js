@@ -18,9 +18,9 @@ exports.create = async (req, res) => {
     user_number: number,
     user_role: "C",
     user_address: address,
-    lat: 0,
-    
-    lng: 0,
+    lat: 6.024857863510064,
+
+    lng: 101.96321047615935,
     user_name: username,
     user_password: hashPassword(password),
     
