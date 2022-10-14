@@ -159,39 +159,23 @@ exports.login = async (req, res) =>{
 
 
 }
-// exports.login = async (req, res) => {
-//   const { username, password } = req.body
-
-//   // ตรวจสอบความถูกต้อง request
-//   if (validate_req(req, res, [username, password])) return
-//   // คำสั่ง SQL
-//   let sql = `SELECT * FROM users WHERE user_name = '${username}'`
-//   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
-//   await mysql.get(sql, async (err, data) => {
-//     if (err)
-//       res.status(err.status).send({
-//         message: err.message || 'Some error occurred.',
-//       })
-//     else if (data[0] && password == data[0].password) {
-//       // data[0].token = await signtoken({ id: data[0].id },'1d')verifyingHash(
-//       delete data[0].password
-//       res.status(200).json(data[0])
-//     } else res.status(204).end()
-//     })
-//   }
-
-
-
-// exports.number =  (req, res) => {
-//   const { num1, num2 } = req.body
-//   // ตรวจสอบความถูกต้อง request
-//   if (validate_req(req, res, [num1, num2])) return
-
-//   let number = num1 * num2
-//   let number2 = parseInt(num1) + parseInt(num2)
-
-//   res.status(200).json({
-//     num1 : number,
-//     num2 : number2
-//    })
-// 
+exports.updatelocation = async (req, res) => {
+  //ดึงข้อมูลจาก request
+  const { lat,lng } = req.body
+  //ดึงข้อมูลจาก params
+  const { id } = req.params
+  //ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [id])) return
+  //คำสั่ง SQL
+  let sql = `UPDATE users SET lat = ?,lng  = ? WHERE user_id = ?`
+  //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
+  let data = [lat,lng ,  id]
+  //แก้ไขข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.update(sql, data, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else res.status(204).end()
+  })
+}
