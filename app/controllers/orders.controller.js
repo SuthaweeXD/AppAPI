@@ -158,6 +158,7 @@ exports.updateStatus = async (req, res) => {
     else res.status(204).end()
   })
 }
+
 exports.findOrder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status,
