@@ -158,3 +158,18 @@ exports.updateStatus = async (req, res) => {
     else res.status(204).end()
   })
 }
+exports.findOrder = async (req, res) => {
+  //คำสั่ง SQL
+  let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status,
+  uo.user_id,uo.user_address 
+   FROM orders oc LEFT JOIN users uo ON oc.user_id = uo.user_id`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data) res.status(200).json(data)
+    else res.status(204).end()
+  })
+}

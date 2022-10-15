@@ -1,3 +1,5 @@
+const { findOrder } = require('../controllers/orders.controller.js')
+
 module.exports = (app) => {
   const router = require('express').Router()
   const { verify } = require('../models/middleware.models.js')
@@ -19,6 +21,8 @@ module.exports = (app) => {
 
   router.delete('/:id', deleteOne)
   router.put('/location/:id', updatelocation)
+  
+
 
   //เซ็ต PREFIX
   app.use(process.env.PREFIX + '/users', router)
