@@ -9,7 +9,7 @@ module.exports = (app) => {
 
   router.post('/login',login)
 
-  router.get('/:id',findOne)
+  router.get('/f/:id',findOne)
 
 //   router.post('/number',number)
 
@@ -18,7 +18,7 @@ module.exports = (app) => {
   router.delete('/:id', deleteOne)
   router.put('/status/:id', updateStatus)
 
-  router.get('/f',findOrder)
+  router.get('/forder',findOrder)
 
   //เซ็ต PREFIX
   app.use(process.env.PREFIX + '/orders', router)
