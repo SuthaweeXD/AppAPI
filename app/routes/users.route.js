@@ -20,6 +20,7 @@ module.exports = (app) => {
   router.put('/password/:id', updatepassword)
 
   router.delete('/:id', deleteOne)
+  
   router.put('/location/:id', updatelocation)
   
 

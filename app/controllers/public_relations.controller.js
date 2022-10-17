@@ -2,6 +2,7 @@ const validate_req = require('../models/validate_req.models')
 const mysql = require('../models/mysql.models')
 const { verifyingHash, hashPassword } = require('../models/hashing.models')
 const { signtoken } = require('../models/middleware.models')
+const uploadImage = require('../models/suprabase')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
@@ -129,17 +130,24 @@ exports.login = async (req, res) => {
   })
 }
 
-
-// exports.number =  (req, res) => {
-//   const { num1, num2 } = req.body
-//   // ตรวจสอบความถูกต้อง request
-//   if (validate_req(req, res, [num1, num2])) return
-
-//   let number = num1 * num2
-//   let number2 = parseInt(num1) + parseInt(num2)
-
-//   res.status(200).json({
-//     num1 : number,
-//     num2 : number2
-//    })
-// }
+exports.uploadImage = async (req, res) => {
+  //ดึงข้อมูลจาก request
+  const file  = req.file
+  //ดึงข้อมูลจาก params
+  const { id } = req.params
+  //ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [id])) return
+  // //คำสั่ง SQL
+  let sql = `UPDATE public_relations SET pr_photo=? WHERE pr_id = ?`
+  //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
+ const url = await uploadImage(file)
+ let data = [url, id]
+  //แก้ไขข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.update(sql, data, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else res.status(204).end()
+  })
+}

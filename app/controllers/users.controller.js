@@ -3,6 +3,7 @@ const mysql = require('../models/mysql.models')
 const { verifyingHash, hashPassword } = require('../models/hashing.models')
 const { sign } = require('../models/middleware.models')
 
+
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { fname, lname, number, address, username, password } = req.body
@@ -179,3 +180,4 @@ exports.updatelocation = async (req, res) => {
     else res.status(204).end()
   })
 }
+

@@ -1,7 +1,11 @@
+
+
 module.exports = (app) => {
+  const multer = require('multer')
+const upload = multer()
   const router = require('express').Router()
   const { verify } = require('../models/middleware.models.js')
-  const { create,findAll,findOne,update,deleteOne,login } = require('../controllers/public_relations.controller')
+  const { create,findAll,findOne,update,deleteOne,login, uploadImage } = require('../controllers/public_relations.controller')
 
   router.post('/', create)
 
@@ -16,6 +20,10 @@ module.exports = (app) => {
   router.put('/:id', update)
 
   router.delete('/:id', deleteOne)
+
+
+  router.put('/pr1/:id',upload.single('photo'), uploadImage)
+
 
   //เซ็ต PREFIX
   app.use(process.env.PREFIX + '/public_relations', router)
