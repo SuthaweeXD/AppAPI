@@ -18,9 +18,9 @@ exports.create = async (req, res) => {
     order_small: small,
     order_big: big,
     order_roll: roll,
-    order_smallprice: smallprice,
-    order_bigprice: bigprice,
-    order_rollprice: rollprice,
+    order_smallprice: 20,
+    order_bigprice: 20,
+    order_rollprice: 20,
     order_status: 1,
     user_id: userid,
 
