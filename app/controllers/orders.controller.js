@@ -162,7 +162,7 @@ exports.updateStatus = async (req, res) => {
 exports.findOrder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status, uo.user_fname , uo.user_lname,
-  uo.user_id,uo.user_address 
+  uo.user_id,uo.user_address, uo.lat,uo.lng 
    FROM orders oc LEFT JOIN users uo ON oc.user_id = uo.user_id`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
