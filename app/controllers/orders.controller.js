@@ -174,3 +174,26 @@ exports.findOrder = async (req, res) => {
     else res.status(204).end()
   })
 }
+
+exports.paymentOrder = async (req, res) => {
+  // ดึงข้อมูลจาก request
+  const file = req.file
+  // ดึงข้อมูลจาก params
+  const { id } = req.params
+  // ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [id])) return
+  // คำสั่ง SQL
+  const url = await uploadImage(file)
+  console.log(url);
+
+  let sql = `UPDATE orders SET order_payment = '${url}' WHERE order_id = ${id}`
+  //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
+
+  await mysql.update(sql, (err) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else res.status(204).end()
+  })
+}
