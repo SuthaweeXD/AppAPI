@@ -2,7 +2,7 @@ const validate_req = require('../models/validate_req.models')
 const mysql = require('../models/mysql.models')
 const { verifyingHash, hashPassword } = require('../models/hashing.models')
 const { signtoken } = require('../models/middleware.models')
-
+const uploadImage = require('../models/suprabase')
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { odate, ogetdate, total,small,big,roll,smallprice,bigprice,rollprice,userid } = req.body
