@@ -181,3 +181,40 @@ exports.updatelocation = async (req, res) => {
   })
 }
 
+exports.createEmp = async (req, res) => {
+  //ดึงข้อมูลจาก request
+  const { fname, lname, number, address, username, password } = req.body
+  //ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [username, password])) return
+  //คำสั่ง SQL
+  let sql = `INSERT INTO users SET ?`
+  //ข้อมูลที่จะใส่ ชื่อฟิล : ข้อมูล
+  let data = {
+    
+    user_fname: fname,
+    user_lname: lname,
+    user_number: number,
+    user_role: "S",
+    user_address: address,
+    lat: 6.024857863510064,
+
+    lng: 101.96321047615935,
+    user_name: username,
+    user_password: hashPassword(password),
+    
+  }
+  console.log(data);
+  //เพิ่มข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.create(sql, data, async (err, data) => {
+   
+
+    if (err)
+      res.status(500).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else {
+      data.token = await sign({id: data.user_id},'3h')
+      res.status(201).json(data)
+    }
+  })
+}
