@@ -5,7 +5,7 @@ const { signtoken } = require('../models/middleware.models')
 const uploadImage = require('../models/suprabase')
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { odate, ogetdate, total,small,big,roll,smallprice,bigprice,rollprice,userid } = req.body
+  const { odate, ogetdate, total,small,big,roll,opayment,userid } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [ userid])) return
   //คำสั่ง SQL
@@ -22,6 +22,7 @@ exports.create = async (req, res) => {
     order_bigprice: 20,
     order_rollprice: 20,
     order_status: 1,
+    order_patment: opayment,
     user_id: userid,
 
 
@@ -161,7 +162,7 @@ exports.updateStatus = async (req, res) => {
 
 exports.findOrder = async (req, res) => {
   //คำสั่ง SQL
-  let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status, uo.user_fname , uo.user_lname,uo.user_number,
+  let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status,oc.order_payment, uo.user_fname , uo.user_lname,uo.user_number,
   uo.user_id,uo.user_address, uo.lat,uo.lng 
    FROM orders oc LEFT JOIN users uo ON oc.user_id = uo.user_id`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป

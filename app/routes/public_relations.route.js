@@ -1,11 +1,12 @@
+const { PRimages } = require('../models/suprabase.js')
 
 
 module.exports = (app) => {
   const multer = require('multer')
-const upload = multer()
+  const upload = multer()
   const router = require('express').Router()
   const { verify } = require('../models/middleware.models.js')
-  const { create,findAll,findOne,update,deleteOne,login, uploadImage } = require('../controllers/public_relations.controller')
+  const { create,findAll,findOne,update,deleteOne,login,prImages } = require('../controllers/public_relations.controller')
 
   router.post('/', create)
 
@@ -22,7 +23,7 @@ const upload = multer()
   router.delete('/:id', deleteOne)
 
 
-  router.put('/pr1/:id',upload.single('photo'), uploadImage)
+  router.put('/pr1/:id',upload.single('photo'), prImages)
 
 
   //เซ็ต PREFIX
