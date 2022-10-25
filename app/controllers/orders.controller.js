@@ -76,7 +76,28 @@ exports.findOne = async (req, res) => {
     else res.status(204).end()
   })
 }
-
+exports.reportOrder = async (req, res) => {
+  //ดึงข้อมูลจาก params
+  const { startDate, endDate } = req.body
+  // ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [startDate, endDate])) return
+  //คำสั่ง SQL
+  let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
+  FROM orders 
+  WHERE order_getdate 
+  BETWEEN '${startDate}' AND '${endDate}'`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data) {
+           res.status(200).json(data[0])
+    }
+    else res.status(204).end()
+  })
+}
 exports.update = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { odate, ogetdate,  total, small, big, roll, smallprice, bigprice, rollprice, ostatus } = req.body
@@ -119,26 +140,6 @@ exports.deleteOne = async (req, res) => {
   })
 }
 
-exports.login = async (req, res) => {
-  const { username, password } = req.body
-
-  // ตรวจสอบความถูกต้อง request
-  if (validate_req(req, res, [username, password])) return
-  // คำสั่ง SQL
-  let sql = `SELECT * FROM users WHERE user_name = '${username}'`
-  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
-  await mysql.get(sql, async (err, data) => {
-    if (err)
-      res.status(err.status).send({
-        message: err.message || 'Some error occurred.',
-      })
-    else if (data[0] && verifyingHash(password, data[0].password))  {
-      data[0].token = await signtoken({ id: data[0].id },'1d')
-      delete data[0].password
-      res.status(200).json(data[0])
-    } else res.status(204).end()
-  })
-}
 exports.updateStatus = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { statusOrder } = req.body
