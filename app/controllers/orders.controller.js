@@ -78,7 +78,7 @@ exports.findOne = async (req, res) => {
 }
 exports.reportOrder = async (req, res) => {
   //ดึงข้อมูลจาก params
-  const { startDate, endDate } = req.body
+  const { startDate, endDate } = req.params
   // ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [startDate, endDate])) return
   //คำสั่ง SQL
