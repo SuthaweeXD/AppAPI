@@ -196,6 +196,23 @@ exports.findOrder = async (req, res) => {
     else res.status(204).end()
   })
 }
+exports.findPayment = async (req, res) => {
+  //คำสั่ง SQL
+  let sql = `SELECT oc.*, uo.user_fname , uo.user_lname,uo.user_number, uo.user_id,uo.user_address, uo.lat,uo.lng 
+  FROM orders oc 
+  LEFT JOIN users uo 
+  ON oc.user_id = uo.user_id
+  WHERE order_status = 4`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data) res.status(200).json(data)
+    else res.status(204).end()
+  })
+}
 
 exports.paymentOrder = async (req, res) => {
   // ดึงข้อมูลจาก request

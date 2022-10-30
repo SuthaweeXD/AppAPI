@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const router = require('express').Router()
-  const { create, findAll, findOne, reportOrder, reportAllorder, update, deleteOne, updateStatus, findOrder, paymentOrder } = require('../controllers/orders.controller')
+  const { create, findAll, findOne, reportOrder, reportAllorder, update, deleteOne, updateStatus, findOrder, paymentOrder, findPayment } = require('../controllers/orders.controller')
   const multer  = require('multer')
   const upload = multer()
   
@@ -24,6 +24,7 @@ module.exports = (app) => {
   router.put('/status/:id', updateStatus)
 
   router.get('/forder',findOrder)
+  router.get('/findpayment',findPayment)
 
   //เซ็ต PREFIX
   app.use(process.env.PREFIX + '/orders', router)
