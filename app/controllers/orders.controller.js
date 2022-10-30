@@ -79,7 +79,7 @@ exports.reportOrder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
   FROM orders 
-  WHERE order_status = 10 order_getdate  
+  WHERE order_status = 10 AND order_getdate  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
@@ -102,7 +102,7 @@ exports.reportAllorder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
   FROM orders 
-  WHERE order_status = '${status}' order_getdate  
+  WHERE order_status = '${status}' AND order_getdate  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
