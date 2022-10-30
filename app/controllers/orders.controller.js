@@ -6,7 +6,7 @@ const {uploadImage} = require('../models/suprabase')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { odate, ogetdate, total,small,big,roll,opayment,userid } = req.body
+  const { odate, ogetdate, total, odep, small, big,roll, opayment, userid } = req.body
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [ userid])) return
   //คำสั่ง SQL
@@ -16,6 +16,7 @@ exports.create = async (req, res) => {
     order_date: odate,
     order_getdate: ogetdate,
     order_total: total,
+    order_dep: odep,
     order_small: small,
     order_big: big,
     order_roll: roll,
@@ -23,18 +24,11 @@ exports.create = async (req, res) => {
     order_bigprice: 20,
     order_rollprice: 20,
     order_status: 1,
-    order_patment: opayment,
-    user_id: userid,
-
-
+    order_payment: opayment,
+    user_id: userid
   }
-  //เพิ่มข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.create(sql, data, (err, data) => {
-    // if ((err.errno = 1062)) {
-    //   return res.status(400).json({
-    //     message: 'Username already have',
-    //   })
-    // }
+
 
     if (err)
       res.status(500).send({
@@ -85,7 +79,7 @@ exports.reportOrder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
   FROM orders 
-  WHERE order_getdate 
+  WHERE order_status = 10 order_getdate  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
@@ -99,6 +93,30 @@ exports.reportOrder = async (req, res) => {
     else res.status(204).end()
   })
 }
+
+exports.reportAllorder = async (req, res) => {
+  //ดึงข้อมูลจาก params
+  const { status,startDate, endDate } = req.params
+  // ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [startDate, endDate])) return
+  //คำสั่ง SQL
+  let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
+  FROM orders 
+  WHERE order_status = '${status}' order_getdate  
+  BETWEEN '${startDate}' AND '${endDate}'`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data) {
+           res.status(200).json(data[0])
+    }
+    else res.status(204).end()
+  })
+}
+
 exports.update = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { odate, ogetdate,  total, small, big, roll, smallprice, bigprice, rollprice, ostatus } = req.body
@@ -164,9 +182,10 @@ exports.updateStatus = async (req, res) => {
 
 exports.findOrder = async (req, res) => {
   //คำสั่ง SQL
-  let sql = `SELECT oc.order_id,oc.order_date,oc.order_getdate, oc.order_small, oc.order_big, oc.order_roll, oc.order_status,oc.order_payment, uo.user_fname , uo.user_lname,uo.user_number,
-  uo.user_id,uo.user_address, uo.lat,uo.lng 
-   FROM orders oc LEFT JOIN users uo ON oc.user_id = uo.user_id`
+  let sql = `SELECT oc.*, uo.user_fname , uo.user_lname,uo.user_number, uo.user_id,uo.user_address, uo.lat,uo.lng 
+  FROM orders oc 
+  LEFT JOIN users uo 
+  ON oc.user_id = uo.user_id`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
     if (err)

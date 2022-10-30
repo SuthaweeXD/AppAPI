@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const router = require('express').Router()
-  const { create, findAll, findOne, reportOrder, update, deleteOne, updateStatus, findOrder, paymentOrder } = require('../controllers/orders.controller')
+  const { create, findAll, findOne, reportOrder, reportAllorder, update, deleteOne, updateStatus, findOrder, paymentOrder } = require('../controllers/orders.controller')
   const multer  = require('multer')
   const upload = multer()
   
@@ -12,6 +12,7 @@ module.exports = (app) => {
   router.get('/f1/:id',findOne)
 
   router.get('/reportOrder/:startDate/:endDate',reportOrder)
+  router.get('/reportAllOrder/:status/:startDate/:endDate',reportAllorder)
 //   router.post('/number',number)
 
   router.put('/:id', update)
