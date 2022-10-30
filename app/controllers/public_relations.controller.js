@@ -136,6 +136,7 @@ exports.prImages = async (req, res) => {
   // ดึงข้อมูลจาก request
   const file = req.file
   // ดึงข้อมูลจาก params
+  const { prdate,descrip } = req.body
   const { id } = req.params
   // ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [id])) return
@@ -143,7 +144,7 @@ exports.prImages = async (req, res) => {
   const url = await PRimages(file)
   console.log(url);
 
-  let sql = `UPDATE public_relations SET pr_photo= '${url}' WHERE pr_id = ${id}`
+  let sql = `UPDATE public_relations SET pr_date = '${prdate}',pr_description  = '${descrip}' , pr_photo= '${url}' WHERE pr_id = ${id}`
   //ข้อมูลที่จะแก้ไขโดยเรียงตามลำดับ เครื่องหมาย ?
 
   await mysql.update(sql, (err) => {
