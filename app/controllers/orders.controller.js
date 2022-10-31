@@ -77,8 +77,8 @@ exports.reportOrder = async (req, res) => {
   // ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [startDate, endDate])) return
   //คำสั่ง SQL
-  let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
-  FROM orders 
+  let sql = `SELECT IFNULL( COUNT(order_id) , 0)  as totalorder ,IFNULL(SUM(order_small), 0) as allordersmall, IFNULL(SUM(order_big), 0) as allorderbig, IFNULL(SUM(order_roll), 0) as allorderroll 
+  FROM orders
   WHERE order_status = 10 AND order_getdate  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
@@ -100,8 +100,8 @@ exports.reportAllorder = async (req, res) => {
   // ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [startDate, endDate])) return
   //คำสั่ง SQL
-  let sql = `SELECT COUNT(order_id) as totalorder, SUM(order_small) as allordersmall, SUM(order_big) as allorderbig, SUM(order_roll) as allorderroll 
-  FROM orders 
+  let sql = `SELECT IFNULL( COUNT(order_id) , 0)  as totalorder ,IFNULL(SUM(order_small), 0) as allordersmall, IFNULL(SUM(order_big), 0) as allorderbig, IFNULL(SUM(order_roll), 0) as allorderroll 
+  FROM orders
   WHERE order_status = '${status}' AND order_getdate  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
