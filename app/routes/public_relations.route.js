@@ -5,10 +5,9 @@ module.exports = (app) => {
   const multer = require('multer')
   const upload = multer()
   const router = require('express').Router()
-  const { verify } = require('../models/middleware.models.js')
   const { create,findAll,findOne,update,deleteOne,login,prImages } = require('../controllers/public_relations.controller')
 
-  router.post('/', create)
+  router.post('/', upload.single('photo'),create)
 
   router.get('/',findAll)
 

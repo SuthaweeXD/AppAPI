@@ -6,7 +6,12 @@ const {PRimages} = require('../models/suprabase')
 
 exports.create = async (req, res) => {
   //ดึงข้อมูลจาก request
-  const { prdate, prdescription } = req.body
+  const { prdate, prdescription,userid } = req.body
+  const file = req.file
+  const url = await PRimages(file)
+  console.log(url);
+  
+
   //ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [prdate, prdescription])) return
   //คำสั่ง SQL
@@ -15,6 +20,8 @@ exports.create = async (req, res) => {
   let data = {
     pr_date: prdate,
     pr_description: prdescription,
+    pr_photo: url,
+    user_id: userid
   
 
   }
