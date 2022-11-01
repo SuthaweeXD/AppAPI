@@ -12,7 +12,7 @@ module.exports = (app) => {
   router.get('/f1/:id',findOne)
 
   router.get('/reportOrder/:startDate/:endDate',reportOrder)
-  router.get('/reportAllOrder/:status/:startDate/:endDate',reportAllorder)
+  router.get('/reportAllOrder/:startDate/:endDate',reportAllorder)
 //   router.post('/number',number)
 router.get('/reportOrderAccept/:startDate/:endDate',reportOrderAccept)
   router.put('/:id', update)

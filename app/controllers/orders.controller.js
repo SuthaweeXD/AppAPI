@@ -58,7 +58,9 @@ exports.findOne = async (req, res) => {
   // ตรวจสอบความถูกต้อง request
   if (validate_req(req, res, [])) return
   //คำสั่ง SQL
-  let sql = `SELECT * FROM orders WHERE user_id = ${id}`
+  let sql = `
+  
+  ${id}`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
     if (err)
@@ -102,7 +104,7 @@ exports.reportOrderAccept = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT IFNULL( COUNT(order_id) , 0)  as totalorder ,IFNULL(SUM(order_small), 0) as allordersmall, IFNULL(SUM(order_big), 0) as allorderbig, IFNULL(SUM(order_roll), 0) as allorderroll 
   FROM orders
-  WHERE order_status = 2 AND order_getdate  
+  WHERE order_status = 2 AND order_date  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
@@ -125,7 +127,7 @@ exports.reportAllorder = async (req, res) => {
   //คำสั่ง SQL
   let sql = `SELECT IFNULL( COUNT(order_id) , 0)  as totalorder ,IFNULL(SUM(order_small), 0) as allordersmall, IFNULL(SUM(order_big), 0) as allorderbig, IFNULL(SUM(order_roll), 0) as allorderroll 
   FROM orders
-  WHERE order_status = '${status}' AND order_getdate  
+  WHERE order_status != 1 AND order_status != 3 AND order_status != 6 AND order_date  
   BETWEEN '${startDate}' AND '${endDate}'`
   //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
   await mysql.get(sql, (err, data) => {
