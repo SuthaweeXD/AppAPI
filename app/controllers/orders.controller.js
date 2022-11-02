@@ -140,6 +140,29 @@ exports.reportAllorder = async (req, res) => {
   })
 }
 
+exports.reportCancle = async (req, res) => {
+  //ดึงข้อมูลจาก params
+  const { status,startDate, endDate } = req.params
+  // ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [startDate, endDate])) return
+  //คำสั่ง SQL
+  let sql = `SELECT IFNULL( COUNT(order_id) , 0)  as totalorder ,IFNULL(SUM(order_small), 0) as allordersmall, IFNULL(SUM(order_big), 0) as allorderbig, IFNULL(SUM(order_roll), 0) as allorderroll 
+  FROM orders
+  WHERE order_status = 3 OR order_status = 6 AND order_date  
+  BETWEEN '${startDate}' AND '${endDate}'`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data) {
+           res.status(200).json(data[0])
+    }
+    else res.status(204).end()
+  })
+}
+
 exports.update = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { odate, ogetdate,  total, small, big, roll, smallprice, bigprice, rollprice, ostatus } = req.body
