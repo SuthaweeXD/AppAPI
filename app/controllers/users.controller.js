@@ -80,6 +80,28 @@ exports.findOne = async (req, res) => {
   })
 }
 
+exports.checkSame = async (req, res) => {
+  //ดึงข้อมูลจาก params
+  const { user_name } = req.params
+  // ตรวจสอบความถูกต้อง request
+  if (validate_req(req, res, [
+    user_name
+  ])) return
+  //คำสั่ง SQL
+  let sql = `SELECT COUNT(users.user_id) as CheckS FROM users WHERE user_name = "${user_name}"`
+  //ดึงข้อมูล โดยส่งคำสั่ง SQL เข้าไป
+  await mysql.get(sql, (err, data) => {
+    if (err)
+      res.status(err.status).send({
+        message: err.message || 'Some error occurred.',
+      })
+    else if (data[0]) {
+           res.status(200).json(data[0])
+    }
+    else res.status(204).end()
+  })
+}
+
 exports.update = async (req, res) => {
   //ดึงข้อมูลจาก request
   const { fname, lname, number , address } = req.body

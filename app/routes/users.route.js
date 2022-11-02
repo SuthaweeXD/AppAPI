@@ -3,7 +3,7 @@ const { findOrder } = require('../controllers/orders.controller.js')
 module.exports = (app) => {
   const router = require('express').Router()
   const { verify } = require('../models/middleware.models.js')
-  const { create,findAll,findOne,update,deleteOne,login, updatepassword, updatelocation, createEmp } = require('../controllers/users.controller')
+  const { create,findAll,findOne,update,deleteOne,login, updatepassword, updatelocation, createEmp,checkSame  } = require('../controllers/users.controller')
 
   router.post('/', create)
 
@@ -25,6 +25,7 @@ module.exports = (app) => {
   
   router.post('/emp1', createEmp)
 
+  router.get('/checkSame/:user_name',checkSame)
 
 
   //เซ็ต PREFIX
